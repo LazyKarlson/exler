@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         Exler.es Comments Tracker
+// @name         Exler Comments Tracker
 // @namespace    http://tampermonkey.net/
-// @version      3.0
-// @description  Отмечает новые комментарии на exler.es с момента последнего посещения (с отслеживанием по постам)
+// @version      3.1
+// @description  Отмечает новые комментарии на exler.es и exler.ru с момента последнего посещения (с отслеживанием по постам)
 // @author       You
-// @match        https://exler.es/blog/*.htm*
+// @match        https://exler.*/*/*.htm*
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @run-at       document-end
