@@ -369,22 +369,29 @@
     }
 
     // Навигация по новым комментариям с помощью клавиш j/k
+    let navigationSetup = false;
+    let currentNavIndex = -1;
+
     function setupKeyboardNavigation() {
-        let currentIndex = -1;
         const newComments = document.querySelectorAll('.exler-new-comment');
 
         if (newComments.length === 0) return;
 
+        // Если уже настроили навигацию, не добавляем обработчик повторно
+        if (navigationSetup) return;
+        navigationSetup = true;
+
         function scrollToComment(index) {
-            if (index < 0 || index >= newComments.length) return;
+            const comments = document.querySelectorAll('.exler-new-comment');
+            if (index < 0 || index >= comments.length) return;
 
             // Убираем подсветку с предыдущего
-            if (currentIndex >= 0 && currentIndex < newComments.length) {
-                newComments[currentIndex].style.boxShadow = '';
+            if (currentNavIndex >= 0 && currentNavIndex < comments.length) {
+                comments[currentNavIndex].style.boxShadow = '';
             }
 
-            currentIndex = index;
-            const comment = newComments[currentIndex];
+            currentNavIndex = index;
+            const comment = comments[currentNavIndex];
 
             // Добавляем подсветку текущего
             comment.style.boxShadow = '0 0 0 4px #007bff';
@@ -393,29 +400,33 @@
             comment.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             // Показываем уведомление
-            showNotification(`Новый комментарий ${currentIndex + 1} из ${newComments.length}`);
+            showNotification(`Новый комментарий ${currentNavIndex + 1} из ${comments.length}`);
         }
 
         document.addEventListener('keydown', (e) => {
             // Игнорируем, если фокус в поле ввода
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-            if (e.key === 'j') {
-                // Следующий комментарий
+            const comments = document.querySelectorAll('.exler-new-comment');
+            if (comments.length === 0) return;
+
+            // j или о (русская) - следующий комментарий
+            if (e.key === 'j' || e.key === 'о') {
                 e.preventDefault();
-                const nextIndex = currentIndex + 1;
-                if (nextIndex < newComments.length) {
+                const nextIndex = currentNavIndex + 1;
+                if (nextIndex < comments.length) {
                     scrollToComment(nextIndex);
                 }
-            } else if (e.key === 'k') {
-                // Предыдущий комментарий
+            }
+            // k или л (русская) - предыдущий комментарий
+            else if (e.key === 'k' || e.key === 'л') {
                 e.preventDefault();
-                const prevIndex = currentIndex - 1;
+                const prevIndex = currentNavIndex - 1;
                 if (prevIndex >= 0) {
                     scrollToComment(prevIndex);
-                } else if (currentIndex === -1 && newComments.length > 0) {
-                    // Если ещё не начали навигацию, k переходит к последнему
-                    scrollToComment(newComments.length - 1);
+                } else if (currentNavIndex === -1 && comments.length > 0) {
+                    // Если ещё не начали навигацию, k/л переходит к последнему
+                    scrollToComment(comments.length - 1);
                 }
             }
         });
