@@ -2,7 +2,7 @@
 // @name         Exler Comments Tracker
 // @namespace    http://tampermonkey.net/
 // @version      3.1
-// @description  Отмечает новые комментарии на exler.es и exler.ru с момента последнего посещения (с отслеживанием по постам)
+// @description  Отмечает новые комментарии на exler.* с момента последнего посещения (с отслеживанием по постам)
 // @author       You
 // @match        https://exler.*/*/*.htm*
 // @grant        GM_setValue
