@@ -15,6 +15,7 @@
 
     const STORAGE_KEY = 'exler_comments_data';
     const MAX_POST_AGE_DAYS = 30; // Автоочистка данных старше 30 дней
+    const LAST_LOAD_TIME = new Date();
 
     // Получаем URL текущей страницы (без якоря)
     function getPageKey() {
@@ -64,14 +65,14 @@
         data = cleanupOldData(data);
 
         // Сохраняем текущее время для этого поста
-        data.readPosts[pageKey] = new Date().toISOString();
+        data.readPosts[pageKey] = LAST_LOAD_TIME.toISOString();
 
         saveStorageData(data);
     }
 
     // Очистка старых данных
     function cleanupOldData(data) {
-        const now = new Date();
+        const now = LAST_LOAD_TIME;
         const maxAge = MAX_POST_AGE_DAYS * 24 * 60 * 60 * 1000;
 
         for (const [url, timestamp] of Object.entries(data.readPosts)) {
