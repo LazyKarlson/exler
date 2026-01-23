@@ -347,19 +347,8 @@
         // Создаём панель управления
         createControlPanel(newCount);
 
-        // Показываем уведомление, если есть новые комментарии
+        // Включаем навигацию по клавишам, если есть новые комментарии
         if (newCount > 0) {
-            showNotification(`Найдено новых комментариев: ${newCount}. Навигация: j/k`);
-
-            // Прокручиваем к первому новому комментарию
-            const firstNew = comments.find(c => c.isNew);
-            if (firstNew) {
-                setTimeout(() => {
-                    firstNew.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 500);
-            }
-
-            // Включаем навигацию по клавишам
             setupKeyboardNavigation();
         }
 
@@ -398,9 +387,6 @@
 
             // Прокручиваем к комментарию
             comment.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            // Показываем уведомление
-            showNotification(`Новый комментарий ${currentNavIndex + 1} из ${comments.length}`);
         }
 
         document.addEventListener('keydown', (e) => {
